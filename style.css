@@ -1,0 +1,86 @@
+
+body{
+    margin: 0;
+    padding: 0;
+    -webkit-appearance: none;
+
+}
+
+#container {
+    background-color: rgb(213, 147, 147);
+    height: 100%;
+    width: 100%;
+    display: grid;
+    align-items: center;
+}
+
+#calculatorContainer{
+    width: 70%;
+    max-width: 35rem;
+    margin: auto;
+    background-color: orange;
+    height: 85%;
+    max-height: 80rem;
+    display: grid;
+    grid-template-rows: 4fr 5fr;
+    padding: 8px 12px 8px 12px;
+    border-radius: 10px;
+}
+
+
+#displayArea{
+    background-color: rgb(60, 60, 160);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+
+
+#previouspreviousNumberArea{
+    height: 33%;
+    background-color: yellow;
+    position: relative;
+}
+
+#previousPreviousNumber{
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+}
+
+#previousNumberArea{
+    background-color: purple;
+    height: 33%;
+    position: relative;
+}
+
+#previousNumber{
+    position: absolute;
+
+    bottom: 5px;
+    right: 5px;
+}
+
+#currentNumberArea{
+    background-color: lightcoral;
+    height: 34%;
+    position: relative;
+}
+
+#currentNumber{
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+}
+
+#buttonArea{
+    background-color: lightblue;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 0.8fr;
+    grid-auto-rows: 1fr 1fr 1fr 1fr 1fr;
+    column-gap: 11px;
+    row-gap: 11px;
+    padding: 11px;
+}
+

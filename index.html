@@ -1,0 +1,161 @@
+<html>
+    <head>
+        <title>Julian's Calculator</title>
+        <link rel="stylesheet" href="style.css">
+
+    </head>
+    <body>
+        <div id="container">
+            <div id="calculatorContainer">
+                <div id="displayArea">
+                    <div id="previousPreviousNumberArea">
+                        <div id="previousPreviousNumber">
+                            10+20
+
+                        </div>
+                    </div>
+                    <div id="previousNumberArea">
+                        <div id="previousNumber">
+                            30+5
+                        </div> 
+                    </div>
+                    <div id="currentNumberArea">
+                        <div id="currentNumber">
+                            5+5+5
+                        </div>
+                    </div>
+
+                    
+                </div>
+
+                <div id="buttonArea">
+                    <button>Clear</button>
+                    <button>Backspace</button>
+                    <button>x^2</button>
+                    <button>*</button>
+                    <button>7</button>
+                    <button>8</button>
+                    <button>9</button>
+                    <button>/</button>
+                    <button>4</button>
+                    <button>5</button>
+                    <button>6</button>
+                    <button>+</button>
+                    <button>1</button>
+                    <button>2</button>
+                    <button>3</button>
+                    <button>-</button>
+                    <button>0</button>
+                    <button>.</button>
+                    <button>+/-</button>
+                    <button>=</button>
+                </div>
+
+            </div>
+
+        </div>
+        <script>
+            let currentNumber;
+            let previousNumber;
+            let previousPreviousNumber;
+
+            let lastCharWasOperator = false;
+            let lastCharWasDecimal = false;
+            let numberEnteredBeforeOperator = false;
+
+
+            let currentEquation = "";
+
+            //test cases
+            let case1 = "5 + 5 ";
+            let case2 = "30 * 3 * 4 + 19 ";
+            let case3 = "39 / 49 + 59 / 19 ";
+            let case4 = "15";
+            let case5 = "139+2-"
+
+            function evaluate(equation){
+                let equationArr = equation.split(" ");
+
+                equationArr.pop();
+
+                //if last element in array is an operator
+                if(isNaN(equationArr[equationArr.length-1])){
+                    invalidEquation();
+                }
+
+                let totalValue = equationArr[0];
+                let currentNumber;
+                let currentOperator;
+
+                for(i = 1; i < equationArr.length; i++){
+                    console.log("ITERATION " + i);
+                    console.log(totalValue);
+                    console.log(currentOperator);
+                    console.log(currentNumber);
+                    
+                    if(isNaN(equationArr[i])){
+                        if(currentNumber && currentOperator){
+                            console.log("operating" + currentOperator); 
+                            totalValue = operatorEvaluation(currentOperator, currentNumber, totalValue);
+                        }
+                        currentOperator = equationArr[i];
+
+                    }
+                    else{
+                        console.log("assigning");
+                        currentNumber = Number(equationArr[i]);
+                    }
+                }
+
+                totalValue = operatorEvaluation(currentOperator, currentNumber, totalValue);
+
+
+                return totalValue;
+
+            }
+        
+
+            function operatorEvaluation(operator, currentNumber, totalValue){
+                console.log("current operation: " + totalValue + " " + operator + " " + currentNumber);
+                newVal = Number(totalValue);
+
+                if(operator == "+"){
+                    newVal += parseInt(currentNumber);
+                    console.log(totalValue);
+                }
+                if(operator == "-"){
+                    newVal -= currentNumber;
+                }
+                if(operator == "*"){
+                    newVal *= currentNumber;
+                }
+                if(operator == "/"){
+                    if(currentNumber == 0){
+                        divideByZeroError();
+                        return;
+                    } 
+                    newVal /= currentNumber;
+                }
+
+                return newVal;
+            }
+
+            console.log(evaluate(case1));
+            console.log(evaluate(case2));
+            console.log(evaluate(case3));
+            console.log(evaluate(case4));
+            console.log(evaluate(case5));
+
+            function invalidEquation(){
+                alert("That equation is invalid");
+            }
+
+            function divideByZeroError(){
+                alert("Divide by zero error");
+            }
+
+
+        </script>
+
+    </body>
+</html>
