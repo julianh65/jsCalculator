@@ -74,7 +74,7 @@ body{
     right: 5px;
 }
 
-#buttonArea{
+.buttonArea{
     background-color: lightblue;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 0.8fr;

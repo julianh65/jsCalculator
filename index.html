@@ -21,34 +21,34 @@
                     </div>
                     <div id="currentNumberArea">
                         <div id="currentNumber">
-                            5+5+5
+                            
                         </div>
                     </div>
 
                     
                 </div>
 
-                <div id="buttonArea">
-                    <button>Clear</button>
-                    <button>Backspace</button>
-                    <button>x^2</button>
-                    <button>*</button>
-                    <button>7</button>
-                    <button>8</button>
-                    <button>9</button>
-                    <button>/</button>
-                    <button>4</button>
-                    <button>5</button>
-                    <button>6</button>
-                    <button>+</button>
-                    <button>1</button>
-                    <button>2</button>
-                    <button>3</button>
-                    <button>-</button>
-                    <button>0</button>
-                    <button>.</button>
-                    <button>+/-</button>
-                    <button>=</button>
+                <div class="buttonArea">
+                    <button id="clearButton">Clear</button>
+                    <button id="backspaceButton">Backspace</button>
+                    <button id="squareButton">x^2</button>
+                    <button class="normal" data-value=" * ">*</button>
+                    <button class="normal" data-value="7" >7</button>
+                    <button class="normal" data-value="8" >8</button>
+                    <button class="normal" data-value="9" >9</button>
+                    <button class="normal" data-value=" / " >/</button>
+                    <button class="normal" data-value="4" >4</button>
+                    <button class="normal" data-value="5" >5</button>
+                    <button class="normal" data-value="6" >6</button>
+                    <button class="normal" data-value=" + " >+</button>
+                    <button class="normal" data-value="1" >1</button>
+                    <button class="normal" data-value="2" >2</button>
+                    <button class="normal" data-value="3" >3</button>
+                    <button class="normal" data-value=" - " >-</button>
+                    <button class="normal" data-value="0" >0</button>
+                    <button class="normal" data-value="." >.</button>
+                    <button data-value="" >+/-</button>
+                    <button id="equalsButton" >=</button>
                 </div>
 
             </div>
@@ -60,23 +60,84 @@
             let previousPreviousNumber;
 
             let lastCharWasOperator = false;
-            let lastCharWasDecimal = false;
-            let numberEnteredBeforeOperator = false;
+            let decimalInputted = false;
 
+            let hasPreviousEquation = false;
+            let previousEquationValue = "";
 
             let currentEquation = "";
 
-            //test cases
-            let case1 = "5 + 5 ";
-            let case2 = "30 * 3 * 4 + 19 ";
-            let case3 = "39 / 49 + 59 / 19 ";
-            let case4 = "15";
-            let case5 = "139+2-"
+            function changePolarity(){
+
+            }
+
+
+            function appendValueToEquation(e){
+                let value = e.target.getAttribute("data-value");
+
+                operators = ["+", "-", "*", "/"];
+
+                if(currentEquation == "" && operators.includes(value) && hasPreviousEquation){
+                    currentEquation += previousEquationValue;
+                    currentEquation += value;
+                    return;
+                }
+
+                if(value == "."){
+                    decimalInputted = true;
+                }
+
+                if(operators.includes(value)){
+                    lastCharWasOperator = true;
+                }
+
+                if(!operators.includes(value)){
+                    lastCharWasOperator = false;
+                    decimalInputted = false;
+                }
+
+                if(decimalInputted && value == "."){
+                    alert("Error: You can't enter two decimals");
+                    return;
+                }
+
+                if(lastCharWasOperator && operators.includes(value)){
+                    alert("Error: You can't enter two operators in a row");
+                    return;
+                }
+
+                currentEquation += value;
+            }
+
+            let backspaceButtonReference = document.querySelector("#backspaceButton");
+            backspaceButtonReference.addEventListener("click", backSpace);
+
+            function backSpace(){
+                if(currentEquation.charAt(currentEquation.length - 1) == " "){
+                    temp = currentEquation.slice(0, -2);
+                    currentEquation = temp;
+                }
+                else{
+                    temp = currentEquation.slice(0, -1);
+                    currentEquation = temp;   
+                }
+            }
+
+            let clearButtonReference = document.querySelector("#clearButton");
+            clearButtonReference.addEventListener("click", clear);
+
+            function clear(){
+                currentEquation = "";
+            }
+
+            function square(){
+                return evaluate(currentEquation) * evaluate(currentEquation);
+            }
 
             function evaluate(equation){
                 let equationArr = equation.split(" ");
 
-                equationArr.pop();
+                // equationArr.pop();
 
                 //if last element in array is an operator
                 if(isNaN(equationArr[equationArr.length-1])){
@@ -88,40 +149,46 @@
                 let currentOperator;
 
                 for(i = 1; i < equationArr.length; i++){
-                    console.log("ITERATION " + i);
-                    console.log(totalValue);
-                    console.log(currentOperator);
-                    console.log(currentNumber);
+                    // console.log("ITERATION " + i);
+                    // console.log(totalValue);
+                    // console.log(currentOperator);
+                    // console.log(currentNumber);
                     
                     if(isNaN(equationArr[i])){
+                        if(isNaN(equationArr[i - 1])){
+                            invalidEquation();
+                            return;
+                        }
+
                         if(currentNumber && currentOperator){
-                            console.log("operating" + currentOperator); 
+                            // console.log("operating" + currentOperator); 
                             totalValue = operatorEvaluation(currentOperator, currentNumber, totalValue);
                         }
                         currentOperator = equationArr[i];
 
                     }
                     else{
-                        console.log("assigning");
+                        // console.log("assigning");
                         currentNumber = Number(equationArr[i]);
                     }
                 }
 
                 totalValue = operatorEvaluation(currentOperator, currentNumber, totalValue);
 
+                hasPreviousEquation = true;
+
+                previousEquationValue = totalValue;
 
                 return totalValue;
 
             }
-        
 
             function operatorEvaluation(operator, currentNumber, totalValue){
-                console.log("current operation: " + totalValue + " " + operator + " " + currentNumber);
+                // console.log("current operation: " + totalValue + " " + operator + " " + currentNumber);
                 newVal = Number(totalValue);
 
                 if(operator == "+"){
-                    newVal += parseInt(currentNumber);
-                    console.log(totalValue);
+                    newVal += currentNumber;
                 }
                 if(operator == "-"){
                     newVal -= currentNumber;
@@ -140,21 +207,43 @@
                 return newVal;
             }
 
-            console.log(evaluate(case1));
-            console.log(evaluate(case2));
-            console.log(evaluate(case3));
-            console.log(evaluate(case4));
-            console.log(evaluate(case5));
-
             function invalidEquation(){
                 alert("That equation is invalid");
+                clear();
             }
 
             function divideByZeroError(){
                 alert("Divide by zero error");
+                clear();
             }
 
 
+
+            //adding event listeners to button area
+            let buttonArea = document.querySelector(".buttonArea").children;
+            for(i = 0; i < buttonArea.length; i++){
+                if(buttonArea[i].classList.contains("normal")){
+                    buttonArea[i].addEventListener("click", appendValueToEquation);
+                }
+            }
+
+            let button = document.querySelector("#equalsButton");
+            button.addEventListener("click", evaluateEq);
+
+
+
+            let currentNumberReference = document.querySelector("#currentNumber");
+            let buttonAreaReference = document.querySelector(".buttonArea");
+            buttonAreaReference.addEventListener("click", updateNumberField);
+
+            function updateNumberField(){
+                currentNumberReference.textContent = currentEquation;
+            }
+
+            function evaluateEq(){
+                previousEquationValue = evaluate(currentEquation);
+                currentEquation = evaluate(currentEquation);
+            }
         </script>
 
     </body>
