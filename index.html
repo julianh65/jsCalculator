@@ -10,13 +10,11 @@
                 <div id="displayArea">
                     <div id="previousPreviousNumberArea">
                         <div id="previousPreviousNumber">
-                            10+20
 
                         </div>
                     </div>
                     <div id="previousNumberArea">
                         <div id="previousNumber">
-                            30+5
                         </div> 
                     </div>
                     <div id="currentNumberArea">
@@ -47,7 +45,7 @@
                     <button class="normal" data-value=" - " >-</button>
                     <button class="normal" data-value="0" >0</button>
                     <button class="normal" data-value="." >.</button>
-                    <button data-value="" >+/-</button>
+                    <button id="polarityButton" >+/-</button>
                     <button id="equalsButton" >=</button>
                 </div>
 
@@ -59,7 +57,7 @@
             let previousNumber;
             let previousPreviousNumber;
 
-            let lastCharWasOperator = false;
+            let lastCharWasOperator = true;
             let decimalInputted = false;
 
             let hasPreviousEquation = false;
@@ -67,7 +65,24 @@
 
             let currentEquation = "";
 
+            let equationCalculated = false;
+
+            let polarityReversed = false;
+
+
+            let polarityButtonReference = document.querySelector("#polarityButton");
+            polarityButtonReference.addEventListener("click", changePolarity);
+
             function changePolarity(){
+                if(lastCharWasOperator){
+                    if(polarityReversed){
+                        backSpace();
+                    }
+                    else{
+                        currentEquation += "-";
+                        polarityReversed = true;
+                    }
+                }
 
             }
 
@@ -75,7 +90,20 @@
             function appendValueToEquation(e){
                 let value = e.target.getAttribute("data-value");
 
-                operators = ["+", "-", "*", "/"];
+                operators = [" + ", " - ", " * ", " / "];
+
+                if(equationCalculated){
+                    if(!operators.includes(value)){
+                        currentEquation = "";
+                    }
+                }
+
+                equationCalculated = false;
+
+                if(lastCharWasOperator && operators.includes(value)){
+                    alert("Error: You can't enter two operators in a row");
+                    return;
+                }
 
                 if(currentEquation == "" && operators.includes(value) && hasPreviousEquation){
                     currentEquation += previousEquationValue;
@@ -101,10 +129,7 @@
                     return;
                 }
 
-                if(lastCharWasOperator && operators.includes(value)){
-                    alert("Error: You can't enter two operators in a row");
-                    return;
-                }
+
 
                 currentEquation += value;
             }
@@ -128,10 +153,6 @@
 
             function clear(){
                 currentEquation = "";
-            }
-
-            function square(){
-                return evaluate(currentEquation) * evaluate(currentEquation);
             }
 
             function evaluate(equation){
@@ -236,14 +257,34 @@
             let buttonAreaReference = document.querySelector(".buttonArea");
             buttonAreaReference.addEventListener("click", updateNumberField);
 
+            let previousNumberReference = document.querySelector("#previousNumber");
+            let previousPreviousNumberReference = document.querySelector("#previousPreviousNumber");
+
             function updateNumberField(){
                 currentNumberReference.textContent = currentEquation;
             }
 
+
             function evaluateEq(){
                 previousEquationValue = evaluate(currentEquation);
                 currentEquation = evaluate(currentEquation);
+                previousPreviousNumberReference.textContent = previousNumberReference.textContent;
+                previousNumberReference.textContent = currentEquation;
+                equationCalculated = true;
             }
+
+            function square(){
+                currentEquation *= currentEquation;
+                previousPreviousNumberReference.textContent = previousNumberReference.textContent;
+                previousNumberReference.textContent = currentEquation;
+                equationCalculated = true;
+            }
+            
+            let squareButtonReference = document.querySelector("#squareButton");
+            squareButtonReference.addEventListener("click", square);
+
+
+
         </script>
 
     </body>
