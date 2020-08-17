@@ -3,33 +3,57 @@ body{
     margin: 0;
     padding: 0;
     -webkit-appearance: none;
+    font-size: 2.5rem;
 
 }
 
+button{
+    color: inherit;
+    border: none;
+    border-radius: 5px;
+    transition: 0.2s;
+
+}
+
+button:hover{
+    background-color: #8d919c;
+    border: solid;
+}
+
+
+#equalsButton:hover{
+    background-color: #87b878;
+}
+
+#clearButton:hover{
+    background-color: rgb(182, 121, 121);
+}
+
 #container {
-    background-color: rgb(213, 147, 147);
+    background: rgb(145,182,165);
+    background: linear-gradient(50deg, rgba(145,182,165,1) 0%, rgba(223,232,213,1) 35%, rgba(151,153,180,1) 100%);
     height: 100%;
     width: 100%;
     display: grid;
     align-items: center;
+    color: #292624;
 }
 
 #calculatorContainer{
     width: 70%;
     max-width: 35rem;
     margin: auto;
-    background-color: orange;
+    background-color: #3F475A;
     height: 85%;
     max-height: 80rem;
     display: grid;
     grid-template-rows: 4fr 5fr;
-    padding: 8px 12px 8px 12px;
+    padding: 10px 12px 10px 12px;
     border-radius: 10px;
 }
 
 
 #displayArea{
-    background-color: rgb(60, 60, 160);
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -39,31 +63,33 @@ body{
 
 #previouspreviousNumberArea{
     height: 33%;
-    background-color: yellow;
+    background-color: #dfdfdf;
     position: relative;
+    border-radius: 5px 5px 0px 0px;
 }
 
 #previousPreviousNumber{
     position: absolute;
     bottom: 5px;
     right: 5px;
+    padding: 10px;
 }
 
 #previousNumberArea{
-    background-color: purple;
+    background-color: #dfdfdf;
     height: 33%;
     position: relative;
 }
 
 #previousNumber{
     position: absolute;
-
     bottom: 5px;
     right: 5px;
+    padding: 10px;
 }
 
 #currentNumberArea{
-    background-color: lightcoral;
+    background-color: #dfdfdf;
     height: 34%;
     position: relative;
 }
@@ -72,15 +98,17 @@ body{
     position: absolute;
     bottom: 5px;
     right: 5px;
+    padding: 10px;
 }
 
 .buttonArea{
-    background-color: lightblue;
+    background-color: rgb(134, 143, 163);
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 0.8fr;
     grid-auto-rows: 1fr 1fr 1fr 1fr 1fr;
     column-gap: 11px;
     row-gap: 11px;
     padding: 11px;
+    border-radius: 0px 0px 5px 5px;
 }
 

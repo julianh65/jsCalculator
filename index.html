@@ -74,11 +74,16 @@
             polarityButtonReference.addEventListener("click", changePolarity);
 
             function changePolarity(){
+                console.log("polarityReversed: " + polarityReversed);
+                console.log("lastCharWas: " + lastCharWasOperator);
                 if(lastCharWasOperator){
                     if(polarityReversed){
+                        console.log("neet");
                         backSpace();
+                        polarityReversed = false;
                     }
                     else{
+                        console.log("yeet");
                         currentEquation += "-";
                         polarityReversed = true;
                     }
@@ -88,14 +93,34 @@
 
 
             function appendValueToEquation(e){
-                let value = e.target.getAttribute("data-value");
+                let value = ""
+                if(e.key != null){
+                    if(isNaN(e.key)){
+                        value += " ";
+                        value += e.key;
+                        value += " ";
+                    }
+                    else{
+                        value += e.key;
+                    }
+
+                }
+                else{
+                    value += e.target.getAttribute("data-value");
+                }
+
+                console.log(value);
 
                 operators = [" + ", " - ", " * ", " / "];
 
                 if(equationCalculated){
-                    if(!operators.includes(value)){
+                    if(polarityReversed && !operators.includes(value)){
+                        currentEquation = "-";
+                    }
+                    else if(!operators.includes(value)){
                         currentEquation = "";
                     }
+
                 }
 
                 equationCalculated = false;
@@ -117,6 +142,7 @@
 
                 if(operators.includes(value)){
                     lastCharWasOperator = true;
+                    polarityReversed = false;
                 }
 
                 if(!operators.includes(value)){
@@ -152,11 +178,15 @@
             clearButtonReference.addEventListener("click", clear);
 
             function clear(){
+                lastCharWasOperator = true;
+                polarityReversed = false;
                 currentEquation = "";
             }
 
             function evaluate(equation){
                 let equationArr = equation.split(" ");
+
+                polarityReversed = false;
 
                 // equationArr.pop();
 
@@ -282,6 +312,33 @@
             
             let squareButtonReference = document.querySelector("#squareButton");
             squareButtonReference.addEventListener("click", square);
+
+
+
+            //area to add keyboard input
+            document.onkeydown = function(e){
+                let currentKey = e.key;
+                if(e.keyCode == 8 || e.keyCode == 46){
+                    currentKey = "Backspace";
+                }
+                let valid_keys = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0",
+                "Backspace", "*", "/", ".", "+", "-","Enter"]
+
+                if(valid_keys.includes(currentKey)){
+                    console.log(currentKey);
+                    if(currentKey == "Backspace"){
+                        backSpace();
+                    }
+                    if(currentKey == "Enter"){
+                        evaluateEq();
+                    }
+                    else{
+                        appendValueToEquation(e);
+                    }
+                    updateNumberField();
+                }
+
+            }
 
 
 
